@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/terencecistudent/e-commerce.svg?branch=master)](https://travis-ci.org/terencecistudent/e-commerce)
+
+
 <img src="https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png" style="margin: 0;">
 
 Welcome terencecistudent,
