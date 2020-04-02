@@ -11,4 +11,4 @@ Pillow==7.0.0
 psycopg2==2.8.4
 pytz==2019.3
 s3transfer==0.3.3
-stripe==1.70.0
+stripe==2.44.0
