@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'products',
     'cart',
     'checkout',
-    # 'storages',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -89,12 +89,12 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 #     }
 # else:
 #     print("Database URL not found.  Using SQLite instead.")
-        # DATABASES = {
-        #     'default': {
-        #         'ENGINE': 'django.db.backends.sqlite3',
-        #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        #     }
-        # }
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
 
 
 # Password validation
@@ -166,19 +166,47 @@ USE_TZ = True
 
 STRIPE_PUBLISHABLE = os.getenv('STRIPE_PUBLISHABLE')
 STRIPE_SECRET = os.getenv('STRIPE_SECRET')
+"""
+Local
+"""
+# DATABASES = {
+#    'default': {
+#       'ENGINE': 'django.db.backends.sqlite3',
+#       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+# }
 
-DATABASES = {
-   'default': {
-      'ENGINE': 'django.db.backends.sqlite3',
-      'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-   }
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+"""
+Production
+"""
+DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'Expires': 'Thu, 31 Dec 2099 20:00 GMT',
+    'CacheControl': 'max-age=94608000',
 }
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+AWS_STORAGE_BUCKET_NAME = 'terence-ecommerce'
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+AWS_S3_HOST = 's3-eu-west-1.amazonaws.com'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+MEDIAFILES_LOCATION = 'media'
+MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_LOCATION = 'static'
+STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

@@ -4,6 +4,7 @@ $(function() {
         this is how the data will be transferred to Stripe.
     */
     $("#payment-form").submit(function() {
+        console.log("hello");
         var form = this;
         var card = {
             number: $("#id_credit_card_number").val(),
